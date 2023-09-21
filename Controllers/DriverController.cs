@@ -64,6 +64,8 @@ namespace XP.Formula1.Controllers
             if (driver == null)
                 return NotFound("Driver not found");
 
+            drivers.Remove(driver);
+
             return Ok(driver);               
             
         }
