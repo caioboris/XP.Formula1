@@ -2,71 +2,64 @@
 using Microsoft.AspNetCore.Mvc;
 using XP.Formula1.Models;
 using XP.Formula1.Models.Enums;
-
+using XP.Formula1.Services.DriverService;
 
 namespace XP.Formula1.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class DriverController : ControllerBase
-    {
+    { 
+        private readonly IDriverService _driverService;
 
-        private static List<Driver> drivers= new List<Driver>
+        public DriverController(IDriverService driverService) 
         {
-            new Driver
-            {
-                Name = "Lewis Hamilton",
-                Team = "Mercedes",
-                Wins = 103,
-                Nationality = Nationality.GBR,
-                Points = 180
-            }
-        };
+            _driverService= driverService;
+        }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllDrivers()
+        public async Task<ActionResult<List<Driver>>> GetAllDrivers()
         {
-            return Ok(drivers);
+            return _driverService.GetAllDrivers();
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetDriverById(Guid id)
+        public async Task<ActionResult<Driver>> GetDriverById(Guid id)
         {
-            return Ok(drivers.Find(x => x.Id.Equals(id)));
+            var result = _driverService.GetDriverById(id);
+            
+            if(result == null)
+                return NotFound("Driver not found");
+            
+            return Ok(result);
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostDriver(Driver body)
+        public async Task<ActionResult<List<Driver>>> PostDriver(Driver body)
         {
-            drivers.Add(body);
-            return Ok(drivers);
+            return Ok(_driverService.PostDriver(body));
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutDriver(Guid id, Driver body)
+        [HttpPut]
+        public async Task<ActionResult<Driver>> PutDriver( Driver body)
         {
-            var driver = drivers.Find(x => x.Id.Equals(id));
-
-            if(driver == null) 
+            var result = _driverService.PutDriver(body);
+            if (result == null)
                 return NotFound("Driver not found");
 
-            driver = body;
-
-            return Ok(driver);
+            return Ok(result);
         }
 
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteDriver(string id)
+        public async Task<ActionResult<List<Driver>>> DeleteDriver(Guid id)
         {
-            var driver = drivers.Find(x => x.Id.Equals(id));
+            var result = _driverService.DeleteDriver(id); 
 
-            if (driver == null)
+            if (result == null)
                 return NotFound("Driver not found");
 
-            drivers.Remove(driver);
-
-            return Ok(driver);               
+            return Ok(result);               
             
         }
 
