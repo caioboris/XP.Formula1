@@ -1,3 +1,4 @@
+using XP.Formula1.Domain.Interfaces.Services;
 using XP.Formula1.Services.DriverService;
 
 var builder = WebApplication.CreateBuilder(args);

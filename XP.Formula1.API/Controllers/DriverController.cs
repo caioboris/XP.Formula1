@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using XP.Formula1.Models;
-using XP.Formula1.Models.Enums;
-using XP.Formula1.Services.DriverService;
+using XP.Formula1.Domain.Interfaces.Services;
+using XP.Formula1.Domain.Models;
 
 namespace XP.Formula1.Controllers
 {

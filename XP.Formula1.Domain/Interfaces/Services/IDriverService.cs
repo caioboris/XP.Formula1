@@ -1,6 +1,6 @@
-﻿using XP.Formula1.Models;
+﻿using XP.Formula1.Domain.Models;
 
-namespace XP.Formula1.Services.DriverService
+namespace XP.Formula1.Domain.Interfaces.Services
 {
     public interface IDriverService
     {
