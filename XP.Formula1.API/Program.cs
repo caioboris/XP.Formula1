@@ -1,3 +1,7 @@
+using XP.Formula1.Domain.Interfaces.Services;
+using XP.Formula1.Infrastructure.Data.DataContext;
+using XP.Formula1.Services.DriverService;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IDriverRepository, DriverRepository>();
+builder.Services.AddDbContext<DataContext>();
 
 var app = builder.Build();
 
