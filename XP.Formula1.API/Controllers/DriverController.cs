@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using XP.Formula1.Domain.Interfaces.Services;
 using XP.Formula1.Domain.Models;
+using XP.Formula1.Infrastructure.Data.DataContext;
 
 namespace XP.Formula1.Controllers
 {
@@ -9,23 +10,23 @@ namespace XP.Formula1.Controllers
     [ApiController]
     public class DriverController : ControllerBase
     { 
-        private readonly IDriverService _driverService;
+        private readonly IDriverRepository _driverRepository;
 
-        public DriverController(IDriverService driverService) 
+        public DriverController(IDriverRepository driverRepository ) 
         {
-            _driverService= driverService;
+            _driverRepository = driverRepository ;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Driver>>> GetAllDrivers()
+        public async Task<IActionResult> GetAllDrivers()
         {
-            return _driverService.GetAllDrivers();
+            return Ok(await _driverRepository.GetAllDrivers());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Driver>> GetDriverById(Guid id)
         {
-            var result = _driverService.GetDriverById(id);
+            var result = await _driverRepository.GetDriverById(id);
             
             if(result == null)
                 return NotFound("Driver not found");
@@ -34,15 +35,15 @@ namespace XP.Formula1.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<List<Driver>>> PostDriver(Driver body)
+        public async Task<IActionResult> PostDriver(Driver body)
         {
-            return Ok(_driverService.PostDriver(body));
+            return Ok(await _driverRepository.PostDriver(body));
         }
 
         [HttpPut]
         public async Task<ActionResult<Driver>> PutDriver( Driver body)
         {
-            var result = _driverService.PutDriver(body);
+            var result = await _driverRepository.PutDriver(body);
             if (result == null)
                 return NotFound("Driver not found");
 
@@ -53,7 +54,7 @@ namespace XP.Formula1.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<List<Driver>>> DeleteDriver(Guid id)
         {
-            var result = _driverService.DeleteDriver(id); 
+            var result = await _driverRepository.DeleteDriver(id); 
 
             if (result == null)
                 return NotFound("Driver not found");
